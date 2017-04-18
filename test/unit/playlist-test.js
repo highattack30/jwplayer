@@ -6,52 +6,50 @@ define([
     'playlist/track',
     'playlist/item'
 ], function (_, mp4, playlist, source, track, item) {
-    /* jshint qunit: true */
+
 
     function isValidPlaylistItem(item) {
         return _.isObject(item) && _.isArray(item.sources) && _.isArray(item.tracks);
     }
 
-    QUnit.module('playlist');
-    var test = QUnit.test.bind(QUnit);
+    describe('playlist', function () {
 
-    test('Test initialized successfully', function(assert) {
-        assert.expect(3);
 
-        assert.equal(typeof item, 'function', 'item is defined');
-        assert.equal(typeof source, 'function', 'source is defined');
-        assert.equal(typeof track, 'function', 'track is defined');
-    });
+        it('Test initialized successfully', function () {
 
-    test('Test constructor with single item', function (assert) {
-        assert.expect(3);
-        var p;
+            assert.equal(typeof item, 'function', 'item is defined');
+            assert.equal(typeof source, 'function', 'source is defined');
+            assert.equal(typeof track, 'function', 'track is defined');
+        });
 
-        p = playlist(mp4.starscape);
-        assert.ok(isValidPlaylistItem(p[0]), 'Initialize single item');
+        it('Test constructor with single item', function () {
+            var p;
 
-        p = playlist(undefined);
-        assert.ok(isValidPlaylistItem(p[0]), 'Initialize with undefined item');
+            p = playlist(mp4.starscape);
+            assert.ok(isValidPlaylistItem(p[0]), 'Initialize single item');
 
-        // TODO: this doesn't actually work, shouldn't pass
-        p = playlist(mp4.starscape.file);
-        assert.ok(isValidPlaylistItem(p[0]), 'Initialize with just file name');
-    });
+            p = playlist(undefined);
+            assert.ok(isValidPlaylistItem(p[0]), 'Initialize with undefined item');
 
-    test('Test constructor with array of items', function (assert) {
-        assert.expect(3);
-        var p,
-            arr = [mp4.starscape, mp4.starscape, mp4.starscape];
+            // TODO: this doesn't actually work, shouldn't pass
+            p = playlist(mp4.starscape.file);
+            assert.ok(isValidPlaylistItem(p[0]), 'Initialize with just file name');
+        });
 
-        p = playlist(arr);
-        assert.equal(p.length, arr.length, 'Same number of items initialized');
+        it('Test constructor with array of items', function () {
+            var p;
+            var arr = [mp4.starscape, mp4.starscape, mp4.starscape];
 
-        p = playlist([mp4.starscape]);
-        assert.ok(isValidPlaylistItem(p[0]), 'Initialize single item array');
+            p = playlist(arr);
+            assert.equal(p.length, arr.length, 'Same number of items initialized');
 
-        // TODO: inconsistent, this is the only case where it returns an empty array
-        p = playlist([]);
-        assert.ok(_.isArray(p) && p.length === 0, 'Initialize with an empty array as argument');
+            p = playlist([mp4.starscape]);
+            assert.ok(isValidPlaylistItem(p[0]), 'Initialize single item array');
+
+            // TODO: inconsistent, this is the only case where it returns an empty array
+            p = playlist([]);
+            assert.ok(_.isArray(p) && p.length === 0, 'Initialize with an empty array as argument');
+        });
     });
 
 });

@@ -30,7 +30,7 @@ module.exports = function(config) {
     var packageInfo = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
 
     config.set({
-        frameworks: ['qunit'],
+        frameworks: ['mocha', 'chai', 'sinon'],
         reporters: testReporters,
         port: serverPort, // web server port
         colors: !isJenkins, // colors in the output (reporters and logs)
@@ -78,7 +78,7 @@ module.exports = function(config) {
 
         files : [
             //3rd Party Code
-            { pattern: 'test-context.js' },
+            { pattern: 'test-context.js' }
         ],
 
         // preprocess matching files before serving them to the browser
@@ -86,6 +86,7 @@ module.exports = function(config) {
         preprocessors: {
             'test-context.js': ['webpack']
         },
+
         coverageReporter: {
             type: 'html',
             dir: 'reports/coverage'
