@@ -132,23 +132,37 @@ define([
             }).remove();
         });
 
-        it.skip('replaces and restores container', function (done) {
-            var originalContainer = createContainer('player');
+        it('uses video tag in container', function(assert) {
+            var done = assert.async();
+
+            var originalContainer = createWithVideoContainer('player');
             var api = new Api(originalContainer, _.noop);
 
-            var elementInDom = document.getElementById('player');
-            assert.strictEqual(elementInDom, originalContainer, 'container is not replaced before setup');
+            api.setup(_.extend({}, configSmall)).on('ready', function() {
 
-            api.setup(_.extend({}, configSmall)).on('ready', function () {
-                elementInDom = document.getElementById('player');
-                assert.notEqual(elementInDom, originalContainer, 'container is replaced after setup');
-
-                api.remove();
-                elementInDom = document.getElementById('player');
-                assert.strictEqual(elementInDom, originalContainer, 'container is restored after remove');
+                var media = document.getElementById('player').querySelector('video');
+                assert.strictEqual(media.id, 'custom-video', 'video tag in setup container is used by player');
 
                 done();
-            }).on('setupError', function () {
+            }).on('setupError', function() {
+                assert.ok(false, 'FAIL');
+                done();
+            });
+        });
+
+        it('uses audio tag in container', function(assert) {
+            var done = assert.async();
+
+            var originalContainer = createWithAudioContainer('player');
+            var api = new Api(originalContainer, _.noop);
+
+            api.setup(_.extend({}, configSmall)).on('ready', function() {
+
+                var media = document.getElementById('player').querySelector('audio');
+                assert.strictEqual(media.id, 'custom-audio', 'video tag in setup container is used by player');
+
+                done();
+            }).on('setupError', function() {
                 assert.ok(false, 'FAIL');
                 done();
             });
@@ -346,9 +360,9 @@ define([
                     assert.ok(true, 'ready event fired after setup');
                     done();
                 }).on('setupError', function () {
-                    assert.ok(false, 'FAIL');
-                    done();
-                });
+                assert.ok(false, 'FAIL');
+                done();
+            });
         });
 
         function createApi(id, globalRemoveCallback) {
@@ -356,9 +370,13 @@ define([
             return new Api(container, globalRemoveCallback || _.noop);
         }
 
-        function createContainer(id) {
-            var container = $('<div id="' + id + '"></div>')[0];
-            // document.append(container);
+        function createWithVideoContainer(id) {
+            var container = $('<div id="' + id + '"><video id="custom-video"></video></div>')[0];
+            return container;
+        }
+
+        function createWithAudioContainer(id) {
+            var container = $('<div id="' + id + '"><audio id="custom-audio"></audio></div>')[0];
             return container;
         }
     });
