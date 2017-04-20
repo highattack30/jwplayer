@@ -235,7 +235,7 @@ define([
                     assert.equal(method + ' threw an error', expectedMessage, expectedMessage + ':' + e.message);
                 }
 
-                assert.strictEqual(result, api, 'api.' + method + ' returns an instance of it.skipself');
+                assert.strictEqual(result, api, 'api.' + method + ' returns an instance of itself');
             });
         });
 
