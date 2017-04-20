@@ -8,12 +8,11 @@ define([
 ], function (_, mp4, playlist, source, track, item) {
 
 
-    function isValidPlaylistItem(item) {
-        return _.isObject(item) && _.isArray(item.sources) && _.isArray(item.tracks);
+    function isValidPlaylistItem(playlistItem) {
+        return _.isObject(playlistItem) && _.isArray(playlistItem.sources) && _.isArray(playlistItem.tracks);
     }
 
     describe('playlist', function () {
-
 
         it('Test initialized successfully', function () {
 

@@ -5,7 +5,6 @@ define([
 
     describe('utils.ajax', function () {
 
-
         function validXHR(xhr) {
             if ('XDomainRequest' in window && xhr instanceof window.XDomainRequest) {
                 return true;
@@ -13,7 +12,7 @@ define([
             return xhr instanceof window.XMLHttpRequest;
         }
 
-        it.skip('legacy params', function (done) {
+        it('legacy params', function (done) {
             var xhr = utils.ajax('./data/playlist.xml',
                 function success(xhrResult) {
                     assert.strictEqual(xhrResult, xhr,
@@ -24,58 +23,53 @@ define([
                         'success callback expects the result to have responseXML for XML content');
                     assert.equal(xhrResult.status, 200,
                         'success callback expects that the result status was 200');
-                    done();
-
                 },
                 function error(message, requestUrl, xhrResult) {
                     assert.ok(false, message, requestUrl, xhrResult);
-                    done();
                 },
                 true
             );
+            done();
             assert.ok(validXHR(xhr),
                 'utils.ajax returns an XMLHttpRequest instance');
         });
 
-        it.skip('responseType "text"', function (done) {
+        it('responseType "text"', function (done) {
             var xhr = utils.ajax({
                 url: './data/playlist.json',
                 oncomplete: function (xhrResult) {
                     assert.ok(xhrResult.responseText,
                         'success callback expects the the result to have responseText');
-                    done();
                 },
                 onerror: function (message, requestUrl, xhrResult) {
                     assert.ok(false, message, requestUrl, xhrResult);
-                    done();
                 },
                 responseType: 'text'
             });
+            done();
             assert.ok(validXHR(xhr),
                 'utils.ajax returns an XMLHttpRequest instance');
         });
 
-        it.skip('responseType "json"', function (done) {
+        it('responseType "json"', function (done) {
             var xhr = utils.ajax({
                 url: './data/playlist.json',
                 oncomplete: function (xhrResult) {
 
                     assert.ok(_.isArray(xhrResult.response) && xhrResult.response[0].file,
                         'xhr.response is parsed JSON');
-
-                    done();
                 },
                 onerror: function (message, requestUrl, xhrResult) {
                     assert.ok(false, message, requestUrl, xhrResult);
-                    done();
                 },
                 responseType: 'json'
             });
+            done();
             assert.ok(validXHR(xhr),
                 'utils.ajax returns an XMLHttpRequest instance');
         });
 
-        it.skip('timeout', function (done) {
+        it('timeout', function (done) {
             var nonce = Math.random().toFixed(20).substr(2);
 
             utils.ajax({
@@ -83,19 +77,18 @@ define([
                 oncomplete: function (xhrResult) {
                     assert.notOk(xhrResult.responseText, 'What?');
                     assert.ok(false, 'expected request to timeout immediately');
-                    done();
                 },
                 onerror: function (message) {
                     assert.equal(message, 'Timeout',
                         '"Timeout" error message');
-                    done();
                 },
                 timeout: 0.0001,
                 responseType: 'text'
             });
+            done();
         });
 
-        it.skip('withCredentials', function (done) {
+        it('withCredentials', function (done) {
             utils.ajax({
                 url: './data/playlist.json',
                 oncomplete: function (xhrResult) {
@@ -104,18 +97,17 @@ define([
                     } else {
                         assert.ok(true, 'withCredentials is not available in this browser');
                     }
-                    done();
                 },
                 onerror: function () {
                     assert.ok(false, 'request failed withCredentials');
-                    done();
                 },
                 withCredentials: true,
                 responseType: 'text'
             });
+            done();
         });
 
-        it.skip('withCredentials crossdomain', function (done) {
+        it('withCredentials crossdomain', function (done) {
             utils.ajax({
                 url: './data/playlist.xml',
                 oncomplete: function (xhrResult) {
@@ -128,19 +120,18 @@ define([
                     }
                     assert.ok(xhrResult.responseXML.firstChild,
                         'xml was returned');
-                    done();
                 },
                 onerror: function () {
                     assert.ok(false, 'crossdomain request failed withCredentials and retryWithoutCredentials');
-                    done();
                 },
                 withCredentials: true,
                 retryWithoutCredentials: true,
                 requireValidXML: true
             });
+            done();
         });
 
-        it.skip('error "Error loading file" (bad request)', function (done) {
+        it('error "Error loading file" (bad request)', function (done) {
             utils.ajax({
                 onerror: function () {
                     assert.ok(true, 'missing url param results in  "Error loading file" error');
@@ -149,53 +140,49 @@ define([
             });
         });
 
-        it.skip('error "Invalid XML"', function (done) {
+        it('error "Invalid XML"', function (done) {
             utils.ajax({
-                url: require.toUrl('./data/invalid.xml'),
+                url: './data/invalid.xml',
                 oncomplete: function (xhrResult) {
                     assert.notOk(xhrResult.responseXML, 'What?');
                     assert.ok(false, 'expected error callback with invalid "Invalid XML"');
-                    done();
                 },
                 onerror: function (message) {
                     assert.equal(message, 'Invalid XML',
                         '"Invalid XML" error message');
-                    done();
                 },
                 requireValidXML: true
             });
+            done();
         });
 
-        it.skip('error "Invalid JSON"', function (done) {
+        it('error "Invalid JSON"', function (done) {
             utils.ajax({
-                url: require.toUrl('./data/invalid.xml'),
+                url: './data/invalid.xml',
                 oncomplete: function () {
                     assert.ok(false, 'expected error callback with invalid "Invalid JSON"');
-                    done();
                 },
                 onerror: function (message) {
                     assert.equal(message, 'Invalid JSON',
                         '"Invalid JSON" error message');
-                    done();
                 },
                 responseType: 'json'
             });
+            done();
         });
 
-        it.skip('error "File not found" (404) - Integration Test', function (done) {
+        it('error "File not found" (404) - Integration Test', function (done) {
             utils.ajax({
                 url: 'foobar',
                 oncomplete: function () {
                     assert.ok(false, 'expected error callback with invalid "File not found"');
-                    done();
                 },
                 onerror: function (message) {
                     assert.equal(message, 'File not found',
                         '"File not found" error message');
-                    done();
                 }
             });
+            done();
         });
-
     });
 });

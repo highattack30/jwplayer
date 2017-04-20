@@ -20,8 +20,17 @@ define([
         return _.extend(config, { autostart: true, mute: mute });
     }
 
-    // Test autostart mute behavior in Safari Desktop and iOS
+    function createApi(id, globalRemoveCallback) {
+        var container = createContainer(id);
+        return new Api(container, globalRemoveCallback || _.noop);
+    }
 
+    function createContainer(id) {
+        var container = $('<div id="' + id + '"></div>')[0];
+        return container;
+    }
+
+    // Test autostart mute behavior in Safari Desktop and iOS
     function assertMuteState(assert, mobile, mute, result, done) {
 
         utils.isIOS = function (version) {
@@ -41,16 +50,14 @@ define([
                 api.setVolume(20);
                 muted = api.getMute();
                 assert.equal(muted, false, 'after setting volume to 20, api.getMute() = ' + muted);
-                done();
             })
             .on('setupError', function () {
                 assert.ok(false, 'FAIL');
-                done();
             });
+        done();
     }
 
-    describe.skip('api.getMute', function () {
-
+    describe('api.getMute', function () {
 
         it('api.getMute() on mobile when autostart: true & mute: false', function (done) {
             assertMuteState(assert, true, false, true, done);
@@ -65,16 +72,5 @@ define([
         it('api.getMute() on desktop when autostart: true & mute: true', function (done) {
             assertMuteState(assert, false, true, true, done);
         });
-
-        function createApi(id, globalRemoveCallback) {
-            var container = createContainer(id);
-            return new Api(container, globalRemoveCallback || _.noop);
-        }
-
-        function createContainer(id) {
-            var container = $('<div id="' + id + '"></div>')[0];
-            // document.append(container);
-            return container;
-        }
     });
 });

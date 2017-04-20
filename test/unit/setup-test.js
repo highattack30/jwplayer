@@ -59,7 +59,7 @@ define([
             }, assert);
         });
 
-        it.skip('succeeds when model.playlist.sources is valid', function (done) {
+        it('succeeds when model.playlist.sources is valid', function (done) {
             var model = {
                 playlist: [{ sources: [{ file: 'http://playertest.longtailvideo.com/mp4.mp4' }] }]
             };
@@ -71,7 +71,7 @@ define([
             });
         });
 
-        it.skip('modifies config', function (done) {
+        it('modifies config', function (done) {
             var options = {
                 file: 'http://playertest.longtailvideo.com/mp4.mp4',
                 aspectratio: '4:3',
@@ -103,7 +103,6 @@ define([
                 } catch (e) {
                     assert.notOk(e.toString());
                 }
-                done();
             });
             api.on('setupError', function (e) {
                 clearTimeout(timeout);
@@ -113,7 +112,6 @@ define([
                 } catch (evt) {
                     assert.notOk(evt.toString());
                 }
-                done();
             });
             var timeout = setTimeout(function () {
                 assert.notOk('Setup timed out');
@@ -122,8 +120,8 @@ define([
                 } catch (e) {
                     assert.notOk(e.toString());
                 }
-                done();
             }, 8000);
+            done();
             return api;
         }
 

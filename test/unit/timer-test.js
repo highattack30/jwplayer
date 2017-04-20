@@ -2,9 +2,7 @@ define([
     'utils/timer'
 ], function (timer) {
 
-
     describe('timer', function () {
-
 
         it('timer start/end test', function () {
             var time = new timer();
@@ -25,7 +23,6 @@ define([
             time.tick('event1');
 
             setTimeout(function () {
-
                 time.tick('event2');
 
                 var between = time.between('event1', 'event2');
@@ -33,9 +30,8 @@ define([
 
                 between = time.between('no', 'value');
                 assert.equal(between, null, 'invalid tick events returns null');
-
-                done();
             }, 10);
+            done();
         });
 
     });

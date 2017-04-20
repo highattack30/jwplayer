@@ -3,9 +3,7 @@ define([
     'utils/parser'
 ], function (scriptloader, parser) {
 
-
     describe('scriptloader', function () {
-
 
         var STATUS = {
             NEW: 0,

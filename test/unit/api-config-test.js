@@ -47,7 +47,7 @@ define([
             return x;
         }
 
-        it.skip('handles worst case config options', function () {
+        it('handles worst case config options', function () {
             testConfig();
             testConfig(assert, undefined);
             testConfig(assert, {});
@@ -59,7 +59,7 @@ define([
             // testConfig(assert, {width: true});
         });
 
-        it.skip('accepts width values in different formats', function () {
+        it('accepts width values in different formats', function () {
             var x = testConfig(assert, {
                 width: '100px'
             });
@@ -81,7 +81,7 @@ define([
             assert.equal(x.width, '100', 'raw numbers work');
         });
 
-        it.skip('accepts playlist values in different formats', function () {
+        it('accepts playlist values in different formats', function () {
             var x = testConfig(assert, {
                 playlist: 'urlToLoad'
             });
@@ -93,7 +93,7 @@ define([
             assert.equal(x.playlist[0].file, 'abc.mp4', 'Passing a file attr works');
         });
 
-        it.skip('accepts aspectratio in percentage and W:H formats', function () {
+        it('accepts aspectratio in percentage and W:H formats', function () {
             // http://support.jwplayer.com/customer/portal/articles/1406644-making-jw-player-responsive
             var x = testConfig(assert, {
                 width: '10%',
@@ -142,24 +142,24 @@ define([
             assert.strictEqual(x.aspectratio, undefined, 'aspectratio must contain positive numbers');
         });
 
-        it.skip('updates base to cdn or script location', function () {
+        it('updates base to cdn or script location', function () {
             var CUSTOM_BASE = 'http://mywebsite.com/jwplayer/';
             var apiConfig;
 
 
             apiConfig = testConfig(assert, {});
             if (window.__SELF_HOSTED__) {
-                assert.ok(/.*\//.it.skip(apiConfig.base),
+                assert.ok(/.*\//.it(apiConfig.base),
                     'config.base is set to the jwplayer script location in self-hosted builds: ' + apiConfig.base);
             } else {
-                assert.ok(/.*\//.it.skip(apiConfig.base),
+                assert.ok(/.*\//.it(apiConfig.base),
                     'config.base is set to the repo locations: ' + apiConfig.base);
             }
 
             apiConfig = testConfig(assert, {
                 base: '.'
             });
-            assert.ok(/.*\//.it.skip(apiConfig.base),
+            assert.ok(/.*\//.it(apiConfig.base),
                 'config.base of "." is replaced with the jwplayer script locations: ' + apiConfig.base);
 
             apiConfig = testConfig(assert, {
@@ -169,7 +169,7 @@ define([
                 'config.base is not replaced when a custom value other than "." is specified');
         });
 
-        it.skip('flattens skin object', function () {
+        it('flattens skin object', function () {
             var skinObject = {
                 name: 'foo',
                 url: 'skin/url',
@@ -199,7 +199,7 @@ define([
                 'skin.name defaults to "seven" when a skin object with no name is passed');
         });
 
-        it.skip('removes ".xml" from skin param', function () {
+        it('removes ".xml" from skin param', function () {
             var x = testConfig(assert, {
                 skin: 'six.xml'
             });

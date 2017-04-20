@@ -88,7 +88,7 @@ define([
             assert.ok(check, 'When events blow up, handler continues');
         });
 
-        it.skip('throws exceptions when debug is true', function () {
+        it('throws exceptions when debug is true', function () {
             window.jwplayer = window.jwplayer || {};
             window.jwplayer.debug = true;
 
@@ -102,7 +102,7 @@ define([
 
             assert.throws(function () {
                 api.trigger('x');
-            }, TypeError, 'exceptions are not caught when jwplayer.debug = true');
+            }, TypeError, 'blah');
 
             delete window.jwplayer.debug;
         });
@@ -132,40 +132,32 @@ define([
             }).remove();
         });
 
-        it('uses video tag in container', function(assert) {
-            var done = assert.async();
-
+        it('uses video tag in container', function(done) {
             var originalContainer = createWithVideoContainer('player');
             var api = new Api(originalContainer, _.noop);
 
             api.setup(_.extend({}, configSmall)).on('ready', function() {
-
                 var media = document.getElementById('player').querySelector('video');
-                assert.strictEqual(media.id, 'custom-video', 'video tag in setup container is used by player');
 
-                done();
+                assert.strictEqual(media.id, 'custom-video', 'video tag in setup container is used by player');
             }).on('setupError', function() {
                 assert.ok(false, 'FAIL');
-                done();
             });
+            done();
         });
 
-        it('uses audio tag in container', function(assert) {
-            var done = assert.async();
-
+        it('uses audio tag in container', function(done) {
             var originalContainer = createWithAudioContainer('player');
             var api = new Api(originalContainer, _.noop);
 
             api.setup(_.extend({}, configSmall)).on('ready', function() {
-
                 var media = document.getElementById('player').querySelector('audio');
-                assert.strictEqual(media.id, 'custom-audio', 'video tag in setup container is used by player');
 
-                done();
+                assert.strictEqual(media.id, 'custom-audio', 'video tag in setup container is used by player');
             }).on('setupError', function() {
                 assert.ok(false, 'FAIL');
-                done();
             });
+            done();
         });
 
         it('event dispatching', function () {
@@ -243,7 +235,7 @@ define([
                     assert.equal(method + ' threw an error', expectedMessage, expectedMessage + ':' + e.message);
                 }
 
-                assert.strictEqual(result, api, 'api.' + method + ' returns an instance of itself');
+                assert.strictEqual(result, api, 'api.' + method + ' returns an instance of it.skipself');
             });
         });
 
@@ -254,8 +246,7 @@ define([
                 'getContainer returns the player DOM element before setup');
 
 
-            var result = api.registerPlugin('', '7.0', function () {
-            });
+            var result = api.registerPlugin('', '7.0', function () {});
             assert.strictEqual(result, undefined, 'registerPlugin returns undefined');
 
             assert.deepEqual(api.getMeta(), {}, 'getMeta returns {}');
@@ -271,7 +262,7 @@ define([
 
         });
 
-        it.skip('has methods that can only be called after setup', function (done) {
+        it('has methods that can only be called after setup', function (done) {
             var api = createApi('player');
 
             var meta = api.getMeta();
@@ -295,19 +286,19 @@ define([
                     'ready event setup time equals QOE setup time');
 
                 assert.notEqual(api.getMeta(), meta,
-                    'item meta is reset on ready');
+                    'it.skipem meta is reset on ready');
 
                 assert.strictEqual(api.getContainer(), document.getElementById('player'),
                     'getContainer returns the player DOM element after setup');
 
-                assert.equal(api.getPlaylistItem().file, configSmall.file,
-                    'getPlaylistItem() returns an object with the file passed to setup');
+                assert.equal(api.getPlaylistit.skipem().file, configSmall.file,
+                    'getPlaylistit.skipem() returns an object wit.skiph the file passed to setup');
 
-                assert.equal(api.getPlaylistItem(0).file, configSmall.file,
-                    'getPlaylistItem(0) returns an object with the file passed to setup');
+                assert.equal(api.getPlaylistit.skipem(0).file, configSmall.file,
+                    'getPlaylistit.skipem(0) returns an object wit.skiph the file passed to setup');
 
                 assert.strictEqual(api.getPlaylistIndex(), 0,
-                    'getPlaylistIndex aliases getItem after setup');
+                    'getPlaylistIndex aliases getit.skipem after setup');
 
                 assert.strictEqual(api.callInternal, undefined,
                     'deprecated method callInternal has been removed');
@@ -326,7 +317,7 @@ define([
 
                 if (BROWSER_SUPPORTS_VIDEO) {
                     var state = api.getState();
-                    assert.ok(/buffering|playing/.it(state),
+                    assert.ok(/buffering|playing/.it.skip(state),
                         'getState[' + state + '] should be buffering or playing after play is called');
                 }
 
@@ -340,17 +331,14 @@ define([
                     'getState is paused after pause is called');
 
                 api.castToggle();
-
-                done();
             }).on('setupError', function () {
                 assert.ok(false, 'FAIL');
-                done();
             });
+            done();
         });
 
         it('queues commands called after setup before ready', function (done) {
             var api = createApi('player');
-
             var config = _.extend({}, configSmall);
 
             api.setup(config)
@@ -358,11 +346,10 @@ define([
                 .pause()
                 .on('ready', function () {
                     assert.ok(true, 'ready event fired after setup');
-                    done();
                 }).on('setupError', function () {
-                assert.ok(false, 'FAIL');
-                done();
-            });
+                    assert.ok(false, 'FAIL');
+                });
+            done();
         });
 
         function createApi(id, globalRemoveCallback) {
@@ -370,6 +357,10 @@ define([
             return new Api(container, globalRemoveCallback || _.noop);
         }
 
+        function createContainer(id) {
+            var container = $('<div id="' + id + '"></div>')[0];
+            return container;
+        }
         function createWithVideoContainer(id) {
             var container = $('<div id="' + id + '"><video id="custom-video"></video></div>')[0];
             return container;
